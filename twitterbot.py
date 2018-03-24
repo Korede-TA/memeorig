@@ -17,9 +17,9 @@ today = datetime.date.today()
 duration = datetime.timedelta(days=7)
 
 #mybot = api.get_user(Screen_name = '@_DreamTeamBot')
-def getimg():
+def getimg(query):
     img_urls = []
-    for tweet in tweepy.Cursor(api.search, q = '#meme').items(1000):
+    for tweet in tweepy.Cursor(api.search, q = query).items(1000):
         all_media = tweet.entities.get("media",[{}])
         for cont in all_media:
              if cont.get("type", None) == "photo":
@@ -27,7 +27,7 @@ def getimg():
     print(img_urls)
     return img_urls
     
-getimg()
+getimg("#meme")
 
 
 
