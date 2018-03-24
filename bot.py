@@ -40,6 +40,10 @@ def on_mention_reply():
         reply_text = "http://twitter.com/jack/status/20"
         api.update_status(reply_text, in_reply_to_status_id = tweet.id)
 
+def status_media_url(status):
+    media = status.entities.get("media", [])
+    return media[0]['media_url']
+
 def on_mention_compare():
     q = "to:%s compare" % bothandle
     res = api.search(q) 
@@ -49,12 +53,14 @@ def on_mention_compare():
         print(tweet.entities['media'])
         last_status_var = "MEMEORIG_LAST_STATUS"
         media = tweet.entities.get("media", [{}])
-        if len(media) > 1:
-            similarity_score = imgcomp(media[0]['media_url'], media[1]['media_url'])
-            reply_text = "image similarity: " + str(similarity_score*100)
+        url1 = status_media_url(tweet)
+        url2 = status_media_url(api.get_status(tweet.in_reply_to_status_id))
+        if len(media) == 2:
+            similarity_score = imgcomp(url1, url2)
+            reply_text = "image similarity: " + str(similarity_score*100) + "%"
         else:
             reply_text = "put in two images to compare image"
-        reply_text += " " + str(random.randint(1,100))
+        reply_text += " #" + str(random.randint(1,100))
         print(reply_text)
         api.update_status(reply_text, in_reply_to_status_id = tweet.id)
     
