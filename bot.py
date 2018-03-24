@@ -19,9 +19,9 @@ today = datetime.date.today()
 duration = datetime.timedelta(days=7)
 
 #mybot = api.get_user(Screen_name = '@_DreamTeamBot')
+bothandle = "swag_ebby"
 
 def on_mention_reply():
-    bothandle = "swag_ebby"
     q = "to:%s" % bothandle
     last_status_var = "MEMEORIG_LAST_STATUS"
     res = tweepy.search(q, since_id=os.environ[last_status_var]) if os.environ.has_key(last_status_var) else tweepy.search(q)
@@ -30,11 +30,22 @@ def on_mention_reply():
         ## reply text would usually be the earliest tweet with the image
         reply_text = "http://twitter.com/jack/status/20"
         api.update_status(reply_text, in_reply_to_status_id = tweet.id)
+
+def on_mention_compare():
+    q = "to:%s compare" % bothandle
+    last_status_var = "MEMEORIG_LAST_STATUS"
+    res = tweepy.search(q) 
+    for tweet in res:
+        media = tweet.entities.get("media", [{}])
+        similarity_score = imgcomp(media[0]['medial_url'], media[1]['medial_url'])
+        reply_text = "image similarity: " + str(similarity_score*100)
+        api.update_status(reply_text, in_reply_to_status_id = tweet.id)
     
 if __name__ == "__main__":
     while True:
         try:
             on_mention_reply()
+            on_mention_compare()
             time.sleep(100)
         except:
             break
