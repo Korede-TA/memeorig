@@ -14,7 +14,7 @@ ADD . /
 RUN \
   apt-get update && \
   apt-get install -y python python-dev python-pip python-virtualenv && \
-  pip install -r /data/requirements.txt && \
+  pip install -r requirements.txt && \
 
 # Define default command.
 CMD ["python","bot.py"]
