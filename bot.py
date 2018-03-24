@@ -52,10 +52,11 @@ def on_mention_compare():
         print(tweet.text)
         print(tweet.entities['media'])
         last_status_var = "MEMEORIG_LAST_STATUS"
-        media = tweet.entities.get("media", [{}])
-        url1 = status_media_url(tweet)
-        url2 = status_media_url(api.get_status(tweet.in_reply_to_status_id))
-        if len(media) == 2:
+        _media = tweet.entities.get("media", [{}])
+        
+        if len(_media) == 2:
+            url1 = status_media_url(tweet)
+            url2 = status_media_url(api.get_status(tweet.in_reply_to_status_id))
             similarity_score = imgcomp(url1, url2)
             reply_text = "image similarity: " + str(similarity_score*100) + "%"
         else:
