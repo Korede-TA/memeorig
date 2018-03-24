@@ -12,43 +12,22 @@ auth.set_access_token(accessToken, accessTokenSecret)
 
 auth.secure = True
 api = tweepy.API(auth)
-image_tweet = []
+
+today = datetime.date.today()
+duration = datetime.timedelta(days=7)
 
 #mybot = api.get_user(Screen_name = '@_DreamTeamBot')
-for tweet in tweepy.Cursor(api.search, q = '#cat', since = '2018-03-23', until = '2018-03-24', lang = "en").items():
-    for media in tweet.entities.get("media",[{}]):
-        if media.get("type", None) == "photo":
-
-            image_tweet.append({'url':tweet.entities['media'][0]['media_url'], 'id':tweet.id})
-            print image_tweet
-            try:
-                print("\n")
-                print("Found tweet by: @" + tweet.user.screen_name)
-
-                if (tweet.retweeted == False):
-                    tweet.retweet()
-                    print("Retweeted the tweet")
-                else:
-                    print("Already retweeted the tweet")
-                if (tweet.favorited == False):
-                    tweet.favorite()
-                    print("Favorited the tweet")
-                else:
-                    print("Already favorited the tweet")
-                if tweet.user.following == False:
-                    tweet.user.follow()
-                    print("Followed the user")
-                else:
-                    print("Already Following the user")
-
-            except tweepy.TweepError as e:
-                    print (e.reason)
-                    #time.sleep(10)
-                    continue
-
-            except StopIteration:
-                break
-
+def getimg():
+    img_urls = []
+    for tweet in tweepy.Cursor(api.search, q = '#meme').items(1000):
+        all_media = tweet.entities.get("media",[{}])
+        for cont in all_media:
+             if cont.get("type", None) == "photo":
+                img_urls.append(cont['media_url'])
+    print(img_urls)
+    return img_urls
+    
+getimg()
 
 
 
