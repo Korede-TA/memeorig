@@ -32,7 +32,7 @@ def imgsearch(url=TEST_URL, res_count=102):
         res = resp.json()
         #print(res)
         try:
-            dump.append([ i["link"] for i in res["items"] ]) # so we parse the data like this
+            dump += [ i["link"] for i in res["items"] ] # so we parse the data like this
             start = res["queries"]["nextPage"][0]["startIndex"]
         except KeyError:
             break
