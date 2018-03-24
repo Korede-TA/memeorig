@@ -2,6 +2,7 @@ import os
 import tweepy
 import time
 import datetime
+from flask import Flask
 
 consumerKey = 'TNRHGsKZ9eLFicSVp0mYz8jES'
 consumerSecret = 'pAJME2uhBnc3cJlcTsFfNLtnoPWos0l9YiRLhiNxJxBGtH1YlR'
@@ -20,7 +21,7 @@ duration = datetime.timedelta(days=7)
 #mybot = api.get_user(Screen_name = '@_DreamTeamBot')
 
 def on_mention_reply():
-        bothandle = "swag_ebby"
+    bothandle = "swag_ebby"
     q = "to:%s" % bothandle
     last_status_var = "MEMEORIG_LAST_STATUS"
     res = tweepy.search(q, since_id=os.environ[last_status_var]) if os.environ.has_key(last_status_var) else tweepy.search(q)
