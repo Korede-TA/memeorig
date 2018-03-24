@@ -12,37 +12,42 @@ auth.set_access_token(accessToken, accessTokenSecret)
 
 auth.secure = True
 api = tweepy.API(auth)
+image_tweet = []
 
+#mybot = api.get_user(Screen_name = '@_DreamTeamBot')
+for tweet in tweepy.Cursor(api.search, q = '#cat', since = '2018-03-23', until = '2018-03-24', lang = "en").items():
+    for media in tweet.entities.get("media",[{}]):
+        if media.get("type", None) == "photo":
 
-for tweet in tweepy.Cursor(api.search, q = '#car', since = '2018-03-23', until = '2018-03-24', lang = "en").items():
+            image_tweet.append({'url':tweet.entities['media'][0]['media_url'], 'id':tweet.id})
+            print image_tweet
+            try:
+                print("\n")
+                print("Found tweet by: @" + tweet.user.screen_name)
 
-    try:
-        print("\n")
-        print("Found tweet by: @" + tweet.user.screen_name)
+                if (tweet.retweeted == False):
+                    tweet.retweet()
+                    print("Retweeted the tweet")
+                else:
+                    print("Already retweeted the tweet")
+                if (tweet.favorited == False):
+                    tweet.favorite()
+                    print("Favorited the tweet")
+                else:
+                    print("Already favorited the tweet")
+                if tweet.user.following == False:
+                    tweet.user.follow()
+                    print("Followed the user")
+                else:
+                    print("Already Following the user")
 
-        if (tweet.retweeted == False):
-            tweet.retweet()
-            print("Retweeted the tweet")
-        else:
-            print("Already retweeted the tweet")
-        if (tweet.favorited == False):
-            tweet.favorite()
-            print("Favorited the tweet")
-        else:
-            print("Already favorited the tweet")
-        if tweet.user.following == False:
-            tweet.user.follow()
-            print("Followed the user")
-        else:
-            print("Already Following the user")
+            except tweepy.TweepError as e:
+                    print (e.reason)
+                    #time.sleep(10)
+                    continue
 
-    except tweepy.TweepError as e:
-            print (e.reason)
-            #time.sleep(10)
-            continue
-
-    except StopIteration:
-        break
+            except StopIteration:
+                break
 
 
 
