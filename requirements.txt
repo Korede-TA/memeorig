@@ -1,3 +1,7 @@
 python-twitter
 cloudinary
 datasift
+mrjob
+tweepy
+pyppeteer
+requests
